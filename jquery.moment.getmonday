@@ -1,0 +1,46 @@
+/*!
+ * 扩展moment，获取moment对象所在周的周一日期
+ *
+ * @author TooBug
+ * @version 0.0.1
+ * @license MIT
+ * 
+ **/
+
+(function(moment){
+
+  if(typeof moment === 'undefined') return;
+	//获取当前日期所在周的周一日期，默认以周一为起点
+	moment.fn.getMonday = function(firstDayOfWeek){
+
+		var ret;
+
+		if(!firstDayOfWeek){
+			firstDayOfWeek = 'Monday';
+		}
+
+		firstDayOfWeek = firstDayOfWeek.toLowerCase();
+
+		if(firstDayOfWeek === 'sunday'){
+			
+			//如果周以周日为起点，则直接输出周一的日期
+			ret =  this.day(1);
+
+		}else if(firstDayOfWeek === 'monday'){
+
+			//如果周以周一为起点，则需要对周日特殊处理
+			var dayOfWeek = this.day();
+
+			if(dayOfWeek === 0){
+				ret = this.day(-6);
+			}else{
+				ret = this.day(1);
+			}
+
+		}
+
+		return ret.hours(0).minutes(0).seconds(0).milliseconds(0);
+
+	};
+
+})(window.moment);
